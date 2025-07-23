@@ -96,7 +96,7 @@ SELECT
     company_dim.name AS comapny_name, COUNT(job_postings_fact.job_id) AS jop_postings_count
 FROM job_postings_fact
     INNER JOIN company_dim
-        ON job_postings_fact.company_id = comapny_dim.company_id
+        ON job_postings_fact.company_id = company_dim.company_id
 WHERE jop_postings_fact.job_health_insurance = true
 AND EXTRACT(QUARTER FROM job_postings_fact.job_posted_date) = 2
 GROUP BY company_dim.name
@@ -761,12 +761,21 @@ FROM
 INNER JOIN company_skills GROUP BY
 
 
+WITH engineer_jobs AS (
+SELECT
+    job_id,
+    job_title_short,
+    salary_year_avg,
+    EXTRACT(MONTH FROM job_posted_date) AS month
+FROM    
+    job_postings_fact
+WHERE 
+    job_title_short LIKE '%Engineer%' 
+    AND salary_year_avg IS NOT NULL 
+    AND EXTRACT(MONTH FROM job_posted_date) = 12 
+)
 
-
-
-
-
-
+SELECT * FROM engineer_jobs 
 
 
 
