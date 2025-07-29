@@ -1,5 +1,3 @@
 
 
-SELECT job_posted
-
 
